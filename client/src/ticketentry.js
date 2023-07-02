@@ -5,7 +5,7 @@ const Ticketfetch = () => {
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        fetch("/api/test")
+        fetch("/api/xml")
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
