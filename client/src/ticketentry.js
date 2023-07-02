@@ -9,11 +9,11 @@ const Ticketfetch = () => {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                setData(data);
+                setData(data.message);
             })
             .then(() => setIsLoaded(true))
             .catch((error) => console.log("test", error));
-    }, [data]);
+    }, []);
 
     return (
         <div>
