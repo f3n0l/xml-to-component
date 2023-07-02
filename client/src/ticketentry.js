@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
 
-const MyComponent = () => {
+const Ticketfetch = () => {
     const [data, setData] = useState("");
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
-        fetchData();
-    }, []);
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch("/api/test");
-            console.log(response);
-            const data = await response.json();
-            setData(data);
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    };
+        fetch("/api/test")
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setData(data);
+            })
+            .then(() => setIsLoaded(true))
+            .catch((error) => console.log("test", error));
+    }, [data]);
 
     return (
         <div>
@@ -26,4 +23,4 @@ const MyComponent = () => {
     );
 };
 
-export default MyComponent;
+export default Ticketfetch;
