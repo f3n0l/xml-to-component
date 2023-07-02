@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from "react";
 
+const EntryComponent = ({ entry }) => {
+    // Render the entry's data here
+    return <div>{entry.title}</div>;
+};
+
 const Ticketfetch = () => {
-    const [data, setData] = useState("");
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetch("/api/xml")
+        fetch("/api/xml") // Replace with your JSON endpoint
             .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setData(data.message);
+            .then((jsonData) => {
+                console.log(jsonData.CATALOG.PLANT);
+                setData(jsonData.CATALOG.PLANT); // Adjust the property path to match your JSON structure
             })
-            .then(() => setIsLoaded(true))
-            .catch((error) => console.log("test", error));
+            .catch((error) => console.error("Error:", error));
     }, []);
 
     return (
         <div>
-            <h1>Data from server:</h1>
-            <p>{data}</p>
+            {data.map((entry, index) => (
+                <EntryComponent key={index} entry={entry} />
+            ))}
         </div>
     );
 };
