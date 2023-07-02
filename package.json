@@ -1,0 +1,11 @@
+{
+  "name": "xml-to-component",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/f3n0l/xml-to-component.git",
+  "author": "Tolga Simsek <tsi@david-bock.de>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
