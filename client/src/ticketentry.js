@@ -27,4 +27,7 @@ const Ticketfetch = () => {
     );
 };
 
+// map through entries & filter
+// create component for each suiting entry
+
 export default Ticketfetch;
