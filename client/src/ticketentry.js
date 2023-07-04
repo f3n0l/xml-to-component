@@ -31,3 +31,5 @@ const Ticketfetch = () => {
 // create component for each suiting entry
 
 export default Ticketfetch;
+
+// new component for different entry type
