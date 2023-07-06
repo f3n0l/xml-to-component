@@ -29,6 +29,6 @@ const Ticketfetch = () => {
 
 // map through entries & filter
 // create component for each suiting entry
-// second function
+// second function to implement another filter
 
 export default Ticketfetch;
