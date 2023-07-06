@@ -59,6 +59,10 @@ app.get("/api/xml-secondary", (request, response) => {
     console.log("you are here");
 });
 
+app.get("/api/xml-tertiary", (request, response) => {
+    response.json({ message: "dies ist ein api test von server" });
+    console.log("you are here");
+});
 ///////////////////////////////
 
 server.listen(process.env.PORT || 3001, () => {
