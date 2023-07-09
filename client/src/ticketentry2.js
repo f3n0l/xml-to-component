@@ -48,7 +48,7 @@ const Ticketfetch = () => {
             .catch((error) => console.error("Error:", error));
     }, []);
 
-    const filters = ["2", "Annual", "3", "4", "6", "7"];
+    const filters = ["1", "2", "Annual", "3", "4", "3-5", "6", "7"];
 
     const handleFilterChange = () => {
         const newIndex = (filterIndex + 1) % filters.length;
@@ -62,7 +62,10 @@ const Ticketfetch = () => {
     return (
         <div>
             <div>
-                <button onClick={handleFilterChange}>Cycle Filter</button>
+                <div>Filter = {filters[filterIndex]}</div>
+                <button onClick={handleFilterChange}>
+                    Cycle Filter (Current Filter: {filters[filterIndex]})
+                </button>
             </div>
             <div>
                 {filteredData.map((entry, index) => (
