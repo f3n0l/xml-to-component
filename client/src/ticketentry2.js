@@ -53,6 +53,7 @@ const TicketfetchExtended = () => {
     const [data, setData] = useState([]);
     const [filterIndex, setFilterIndex] = useState(0);
     const [isFilterActive, setIsFilterActive] = useState(true);
+    const [selectedFilter, setSelectedFilter] = useState("");
 
     useEffect(() => {
         fetch("/api/xml") // Replace with your JSON endpoint
@@ -64,7 +65,7 @@ const TicketfetchExtended = () => {
             .catch((error) => console.error("Error:", error));
     }, []);
 
-    const filters = ["2", "Annual", "3", "3 - 5", "4", "6", "7"]; // Add "3 - 5" filter
+    const filters = [...new Set(data.map((entry) => entry.ZONE[0]))]; // Get unique values from "ZONE"
 
     const handleFilterChange = () => {
         const newIndex = (filterIndex + 1) % filters.length;
@@ -75,9 +76,16 @@ const TicketfetchExtended = () => {
         setIsFilterActive((prevFilterState) => !prevFilterState);
     };
 
+    const handleSelectFilter = (event) => {
+        setSelectedFilter(event.target.value);
+    };
+
     const filteredData = Array.isArray(data)
         ? isFilterActive
-            ? data.filter((entry) => entry.ZONE[0] === filters[filterIndex])
+            ? data.filter(
+                  (entry) =>
+                      entry.ZONE[0] === (selectedFilter || filters[filterIndex])
+              )
             : data
         : [];
 
@@ -89,6 +97,14 @@ const TicketfetchExtended = () => {
             <button onClick={handleToggleFilter}>
                 {isFilterActive ? "Deactivate Filters" : "Activate Filters"}
             </button>
+            <select value={selectedFilter} onChange={handleSelectFilter}>
+                <option value="">All</option>
+                {filters.map((filter, index) => (
+                    <option key={index} value={filter}>
+                        {filter}
+                    </option>
+                ))}
+            </select>
             <div>
                 {filteredData.map((entry, index) => (
                     <EntryComponent key={index} entry={entry} />
