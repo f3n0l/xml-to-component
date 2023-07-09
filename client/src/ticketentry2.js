@@ -34,9 +34,9 @@ const EntryComponent = ({ entry }) => {
     );
 };
 
-const TicketfetchExtended = () => {
+const Ticketfetch = () => {
     const [data, setData] = useState([]);
-    const [filterValue, setFilterValue] = useState("4");
+    const [filterIndex, setFilterIndex] = useState(0);
 
     useEffect(() => {
         fetch("/api/xml") // Replace with your JSON endpoint
@@ -48,41 +48,21 @@ const TicketfetchExtended = () => {
             .catch((error) => console.error("Error:", error));
     }, []);
 
-    const handleFilterChange = (value) => {
-        setFilterValue(value);
+    const filters = ["2", "Annual", "3", "4", "6", "7"];
+
+    const handleFilterChange = () => {
+        const newIndex = (filterIndex + 1) % filters.length;
+        setFilterIndex(newIndex);
     };
 
     const filteredData = Array.isArray(data)
-        ? data.filter((entry) => entry.ZONE[0] === filterValue)
+        ? data.filter((entry) => entry.ZONE[0] === filters[filterIndex])
         : [];
 
     return (
         <div>
             <div>
-                <button onClick={() => handleFilterChange("1")}>
-                    Filter 1
-                </button>
-                <button onClick={() => handleFilterChange("2")}>
-                    Filter 2
-                </button>
-                <button onClick={() => handleFilterChange("Annual")}>
-                    Filter Annual
-                </button>
-                <button onClick={() => handleFilterChange("3")}>
-                    Filter 3
-                </button>
-                <button onClick={() => handleFilterChange("4")}>
-                    Filter 4
-                </button>
-                <button onClick={() => handleFilterChange("3-5")}>
-                    Filter 3-5
-                </button>
-                <button onClick={() => handleFilterChange("6")}>
-                    Filter 6
-                </button>
-                <button onClick={() => handleFilterChange("7")}>
-                    Filter 7
-                </button>
+                <button onClick={handleFilterChange}>Cycle Filter</button>
             </div>
             <div>
                 {filteredData.map((entry, index) => (
@@ -93,4 +73,4 @@ const TicketfetchExtended = () => {
     );
 };
 
-export default TicketfetchExtended;
+export default Ticketfetch;
