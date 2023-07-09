@@ -1,8 +1,22 @@
 import React, { useEffect, useState } from "react";
+import "./index.css"; // Import the CSS file
 
 const EntryComponent = ({ entry }) => {
     // Destructure the entry object to access its properties
     const { AVAILABILITY, BOTANICAL, COMMON, LIGHT, PRICE, ZONE } = entry;
+
+    // Get the numeric value from the PRICE property
+    const priceValue = parseFloat(PRICE[0].substring(1));
+
+    // Determine the background color for the PRICE button
+    let priceButtonStyle = {};
+    if (priceValue >= 0 && priceValue < 4) {
+        priceButtonStyle.backgroundColor = "lightgreen";
+    } else if (priceValue >= 4 && priceValue < 6) {
+        priceButtonStyle.backgroundColor = "lightyellow";
+    } else if (priceValue >= 6) {
+        priceButtonStyle.backgroundColor = "lightcoral";
+    }
 
     // Style for the entry component
     const entryStyle = {
@@ -17,8 +31,8 @@ const EntryComponent = ({ entry }) => {
     const buttonStyle = {
         marginRight: "5px",
         padding: "5px",
-        backgroundColor: "lightgray",
         borderRadius: "5px",
+        backgroundColor: "lightgray", // Set the default background color to gray
     };
 
     return (
@@ -27,7 +41,9 @@ const EntryComponent = ({ entry }) => {
             <div style={buttonStyle}>{BOTANICAL[0]}</div>
             <div style={buttonStyle}>{COMMON[0]}</div>
             <div style={buttonStyle}>{LIGHT[0]}</div>
-            <div style={buttonStyle}>{PRICE[0]}</div>
+            <div style={{ ...buttonStyle, ...priceButtonStyle }}>
+                {PRICE[0]}
+            </div>
             <div style={buttonStyle}>{ZONE[0]}</div>
         </div>
     );
@@ -37,17 +53,17 @@ const Ticketfetch = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetch("/api/xml") // Replace with JSON endpoint
+        fetch("/api/xml") // Replace with your JSON endpoint
             .then((response) => response.json())
             .then((jsonData) => {
                 console.log(jsonData.CATALOG.PLANT);
-                setData(jsonData.CATALOG.PLANT); // Set the data state to whats inside jsonData.CATALOG.PLANT
+                setData(jsonData.CATALOG.PLANT); // Set the data state to jsonData.CATALOG.PLANT
             })
             .catch((error) => console.error("Error:", error));
     }, []);
 
     const filteredData = Array.isArray(data)
-        ? data.filter((entry) => entry.ZONE[0] === "4") // adjust filter to specific value needed on page
+        ? data.filter((entry) => entry.ZONE[0] === "4")
         : [];
 
     return (
