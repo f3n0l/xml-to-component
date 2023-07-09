@@ -1,6 +1,11 @@
 import React from "react";
 import Ticketfetch from "./ticketentry";
 
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+
+const Home = () => <h1>Welcome to the Home Page</h1>;
+const Contact = () => <h1>Contact Us</h1>;
+
 const App = () => {
     return (
         <Router>
@@ -19,11 +24,11 @@ const App = () => {
                     </ul>
                 </nav>
 
-                <Switch>
+                <Routes>
                     <Route exact path="/" component={Home} />
                     <Route path="/ticket" component={Ticketfetch} />
                     <Route path="/contact" component={Contact} />
-                </Switch>
+                </Routes>
             </div>
         </Router>
     );
