@@ -5,16 +5,46 @@ const EntryComponent = ({ entry }) => {
     // Destructure the entry object to access its properties
     const { AVAILABILITY, BOTANICAL, COMMON, LIGHT, PRICE, ZONE } = entry;
 
+    // Get the numeric value from the PRICE property
+    const priceValue = parseFloat(PRICE[0].substring(1));
+
+    // Determine the background color for the PRICE button
+    let priceButtonStyle = {};
+    if (priceValue >= 0 && priceValue < 4) {
+        priceButtonStyle.backgroundColor = "lightgreen";
+    } else if (priceValue >= 4 && priceValue < 6) {
+        priceButtonStyle.backgroundColor = "lightyellow";
+    } else if (priceValue >= 6) {
+        priceButtonStyle.backgroundColor = "lightcoral";
+    }
+
+    // Style for the entry component
+    const entryStyle = {
+        display: "flex",
+        flexDirection: "row",
+        border: "1px solid black",
+        marginBottom: "5px",
+        padding: "5px",
+    };
+
+    // Style for the property buttons
+    const buttonStyle = {
+        marginRight: "5px",
+        padding: "5px",
+        borderRadius: "5px",
+        backgroundColor: "lightgray", // Set the default background color to gray
+    };
+
     return (
-        <div className="entry">
-            {" "}
-            {/* Apply the "entry" class */}
-            <div className="property-button">{AVAILABILITY[0]}</div>
-            <div className="property-button">{BOTANICAL[0]}</div>
-            <div className="property-button">{COMMON[0]}</div>
-            <div className="property-button">{LIGHT[0]}</div>
-            <div className="property-button">{PRICE[0]}</div>
-            <div className="property-button">{ZONE[0]}</div>
+        <div style={entryStyle}>
+            <div style={buttonStyle}>{AVAILABILITY[0]}</div>
+            <div style={buttonStyle}>{BOTANICAL[0]}</div>
+            <div style={buttonStyle}>{COMMON[0]}</div>
+            <div style={buttonStyle}>{LIGHT[0]}</div>
+            <div style={{ ...buttonStyle, ...priceButtonStyle }}>
+                {PRICE[0]}
+            </div>
+            <div style={buttonStyle}>{ZONE[0]}</div>
         </div>
     );
 };
@@ -22,6 +52,7 @@ const EntryComponent = ({ entry }) => {
 const TicketfetchExtended = () => {
     const [data, setData] = useState([]);
     const [filterIndex, setFilterIndex] = useState(0);
+    const [isFilterActive, setIsFilterActive] = useState(true);
 
     useEffect(() => {
         fetch("/api/xml") // Replace with your JSON endpoint
@@ -33,21 +64,30 @@ const TicketfetchExtended = () => {
             .catch((error) => console.error("Error:", error));
     }, []);
 
-    const filters = ["2", "Annual", "3", "4", "6", "7"]; // Removed "3-5" and "1"
+    const filters = ["2", "Annual", "3", "3 - 5", "4", "6", "7"]; // Add "3 - 5" filter
 
     const handleFilterChange = () => {
         const newIndex = (filterIndex + 1) % filters.length;
         setFilterIndex(newIndex);
     };
 
+    const handleToggleFilter = () => {
+        setIsFilterActive((prevFilterState) => !prevFilterState);
+    };
+
     const filteredData = Array.isArray(data)
-        ? data.filter((entry) => entry.ZONE[0] === filters[filterIndex])
+        ? isFilterActive
+            ? data.filter((entry) => entry.ZONE[0] === filters[filterIndex])
+            : data
         : [];
 
     return (
         <div>
             <button onClick={handleFilterChange}>
                 Cycle Filter (Current Filter: {filters[filterIndex]})
+            </button>
+            <button onClick={handleToggleFilter}>
+                {isFilterActive ? "Deactivate Filters" : "Activate Filters"}
             </button>
             <div>
                 {filteredData.map((entry, index) => (
