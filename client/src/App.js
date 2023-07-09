@@ -16,7 +16,7 @@ const App = () => {
                             <Link to="/">Home</Link>
                         </li>
                         <li>
-                            <Link to="/ticket">About</Link>
+                            <Link to="/ticket">Ticket</Link>
                         </li>
                         <li>
                             <Link to="/contact">Contact</Link>
@@ -25,9 +25,9 @@ const App = () => {
                 </nav>
 
                 <Routes>
-                    <Route exact path="/" component={Home} />
-                    <Route path="/ticket" component={Ticketfetch} />
-                    <Route path="/contact" component={Contact} />
+                    <Route exact path="/" element={<Home />} />
+                    <Route path="/ticket" element={<Ticketfetch />}></Route>
+                    <Route path="/contact" element={<Contact />} />
                 </Routes>
             </div>
         </Router>
