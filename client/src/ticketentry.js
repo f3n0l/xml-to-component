@@ -1,8 +1,36 @@
 import React, { useEffect, useState } from "react";
 
 const EntryComponent = ({ entry }) => {
-    // Render the entry's data here
-    return <div>{entry.COMMON[0]}</div>;
+    // Destructure the entry object to access its properties
+    const { AVAILABILITY, BOTANICAL, COMMON, LIGHT, PRICE, ZONE } = entry;
+
+    // Style for the entry component
+    const entryStyle = {
+        display: "flex",
+        flexDirection: "row",
+        border: "1px solid black",
+        marginBottom: "5px",
+        padding: "5px",
+    };
+
+    // Style for the property buttons
+    const buttonStyle = {
+        marginRight: "5px",
+        padding: "5px",
+        backgroundColor: "lightgray",
+        borderRadius: "5px",
+    };
+
+    return (
+        <div style={entryStyle}>
+            <div style={buttonStyle}>{AVAILABILITY[0]}</div>
+            <div style={buttonStyle}>{BOTANICAL[0]}</div>
+            <div style={buttonStyle}>{COMMON[0]}</div>
+            <div style={buttonStyle}>{LIGHT[0]}</div>
+            <div style={buttonStyle}>{PRICE[0]}</div>
+            <div style={buttonStyle}>{ZONE[0]}</div>
+        </div>
+    );
 };
 
 const Ticketfetch = () => {
@@ -13,12 +41,15 @@ const Ticketfetch = () => {
             .then((response) => response.json())
             .then((jsonData) => {
                 console.log(jsonData.CATALOG.PLANT);
-                setData(jsonData.CATALOG.PLANT); // Adjust the property path to match JSON structure
+                setData(jsonData.CATALOG.PLANT); // Set the data state to whats inside jsonData.CATALOG.PLANT
             })
             .catch((error) => console.error("Error:", error));
     }, []);
 
-    const filteredData = data.filter((entry) => entry.ZONE[0] === "4"); // Filter the data array based on the condition
+    const filteredData = Array.isArray(data)
+        ? data.filter((entry) => entry.ZONE[0] === "4") // adjust filter to specific value needed on page
+        : [];
+
     return (
         <div>
             {filteredData.map((entry, index) => (
