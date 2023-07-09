@@ -1,40 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import "./index.css"; // Import the CSS file
 
 const EntryComponent = ({ entry }) => {
     // Destructure the entry object to access its properties
     const { AVAILABILITY, BOTANICAL, COMMON, LIGHT, PRICE, ZONE } = entry;
 
-    // Style for the entry component
-    const entryStyle = {
-        display: "flex",
-        flexDirection: "row",
-        border: "1px solid black",
-        marginBottom: "5px",
-        padding: "5px",
-    };
-
-    // Style for the property buttons
-    const buttonStyle = {
-        marginRight: "5px",
-        padding: "5px",
-        backgroundColor: "lightgray",
-        borderRadius: "5px",
-    };
-
     return (
-        <div style={entryStyle}>
-            <div style={buttonStyle}>{AVAILABILITY[0]}</div>
-            <div style={buttonStyle}>{BOTANICAL[0]}</div>
-            <div style={buttonStyle}>{COMMON[0]}</div>
-            <div style={buttonStyle}>{LIGHT[0]}</div>
-            <div style={buttonStyle}>{PRICE[0]}</div>
-            <div style={buttonStyle}>{ZONE[0]}</div>
+        <div className="entry">
+            {" "}
+            {/* Apply the "entry" class */}
+            <div className="property-button">{AVAILABILITY[0]}</div>
+            <div className="property-button">{BOTANICAL[0]}</div>
+            <div className="property-button">{COMMON[0]}</div>
+            <div className="property-button">{LIGHT[0]}</div>
+            <div className="property-button">{PRICE[0]}</div>
+            <div className="property-button">{ZONE[0]}</div>
         </div>
     );
 };
 
-const Ticketfetch = () => {
+const TicketfetchExtended = () => {
     const [data, setData] = useState([]);
     const [filterIndex, setFilterIndex] = useState(0);
 
@@ -48,7 +33,7 @@ const Ticketfetch = () => {
             .catch((error) => console.error("Error:", error));
     }, []);
 
-    const filters = ["1", "2", "Annual", "3", "4", "3-5", "6", "7"];
+    const filters = ["2", "Annual", "3", "4", "6", "7"]; // Removed "3-5" and "1"
 
     const handleFilterChange = () => {
         const newIndex = (filterIndex + 1) % filters.length;
@@ -61,12 +46,9 @@ const Ticketfetch = () => {
 
     return (
         <div>
-            <div>
-                <div>Filter = {filters[filterIndex]}</div>
-                <button onClick={handleFilterChange}>
-                    Cycle Filter (Current Filter: {filters[filterIndex]})
-                </button>
-            </div>
+            <button onClick={handleFilterChange}>
+                Cycle Filter (Current Filter: {filters[filterIndex]})
+            </button>
             <div>
                 {filteredData.map((entry, index) => (
                     <EntryComponent key={index} entry={entry} />
@@ -76,4 +58,4 @@ const Ticketfetch = () => {
     );
 };
 
-export default Ticketfetch;
+export default TicketfetchExtended;
