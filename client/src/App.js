@@ -4,7 +4,7 @@ import Ticketfetch from "./ticketentry";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import TicketfetchExtended from "./ticketentry2";
 
-const Home = () => <h1>Welcome to the Home Page</h1>;
+const Home = () => <h1>XML to React Component</h1>;
 
 const App = () => {
     return (
@@ -16,10 +16,10 @@ const App = () => {
                             <Link to="/">Home</Link>
                         </li>
                         <li>
-                            <Link to="/ticket">Ticket</Link>
+                            <Link to="/ticket">One Filter</Link>
                         </li>
                         <li>
-                            <Link to="/extended">Contact</Link>
+                            <Link to="/extended">All Filters</Link>
                         </li>
                     </ul>
                 </nav>
