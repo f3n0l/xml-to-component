@@ -51,13 +51,8 @@ const EntryComponent = ({ entry }) => {
   const spstnr = spst[0]?.spstnr[0] || "";
   const verkaufStatus = theaweb[0]?.verkauf[0] || "";
 
-  const genreButtonStyle = {
-    marginRight: "5px",
-    padding: "5px",
-    borderRadius: "5px",
-    backgroundColor: genre?.includes("Test1") ? "#1C1C1C" : "transparent",
-  };
 
+const deadline = new Date("2023-08-01"); // Replace with your desired deadline
   const titleLinkStyle = {
     marginRight: "5px",
     padding: "5px",
@@ -65,6 +60,7 @@ const EntryComponent = ({ entry }) => {
     backgroundColor: getButtonBackgroundColor(spstnr),
     color: "white",
     textDecoration: "none",
+     pointerEvents: new Date() >= deadline || verkaufStatus === "N" ? "auto" : "none",
   };
 
   const datumButtonStyle = {
@@ -94,6 +90,13 @@ const freiTextStyle = {
 };
 
   const iconUrl = getIconUrl(frei[0]);
+
+const titleButtonStyle = {
+  marginRight: "5px",
+  padding: "5px",
+  borderRadius: "5px",
+  backgroundColor: genre && genre.includes("Test1") ? "#1C1C1C" : getButtonBackgroundColor(spstnr),
+};
 
 const iconStyle = {
   width: "30px",
