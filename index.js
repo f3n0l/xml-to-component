@@ -14,11 +14,6 @@ app.use(express.json());
 
 ///////////////////////////////
 
-app.get("/api/test", (request, response) => {
-    response.json({ message: "dies ist ein api test von server" });
-    console.log("you are here");
-});
-
 app.get("/api/xml", async (request, response) => {
     function xmlToJson(url, callback) {
         var req = https.get(url, function (res) {
@@ -54,15 +49,6 @@ app.get("/api/xml", async (request, response) => {
     });
 });
 
-app.get("/api/xml-secondary", (request, response) => {
-    response.json({ message: "dies ist ein api test von server" });
-    console.log("you are here");
-});
-
-app.get("/api/xml-tertiary", (request, response) => {
-    response.json({ message: "dies ist ein api test von server" });
-    console.log("you are here");
-});
 ///////////////////////////////
 
 server.listen(process.env.PORT || 3001, () => {
