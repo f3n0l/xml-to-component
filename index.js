@@ -12,12 +12,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(compression());
 app.use(express.json());
 
-///////////////////////////////
+/////////////////////////////// Change URL Below
 
-app.get("/api/test", (request, response) => {
-    response.json({ message: "dies ist ein api test von server" });
-    console.log("you are here");
-});
 
 app.get("/api/xml", async (request, response) => {
     function xmlToJson(url, callback) {
@@ -43,26 +39,20 @@ app.get("/api/xml", async (request, response) => {
             });
         });
     }
-    var url = "https://www.w3schools.com/xml/plant_catalog.xml";
+
+    // Change ending of url according to the date needed:
+    var url = "https://freilichtbuehne-freudenberg-tickets.de/cbn/cbn.php?document=spielplxml&von=01.01.2023&bis=31.12.2023";
     xmlToJson(url, function (err, data) {
-        console.log(data);
+        console.log(data.spielplan.vst);
         if (err) {
             return console.err(err);
         }
-        console.log(data);
-        response.json(data);
+        
+        response.json(data.spielplan);
     });
 });
 
-app.get("/api/xml-secondary", (request, response) => {
-    response.json({ message: "dies ist ein api test von server" });
-    console.log("you are here");
-});
 
-app.get("/api/xml-tertiary", (request, response) => {
-    response.json({ message: "dies ist ein api test von server" });
-    console.log("you are here");
-});
 ///////////////////////////////
 
 server.listen(process.env.PORT || 3001, () => {

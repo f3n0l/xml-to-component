@@ -2,77 +2,160 @@ import React, { useEffect, useState } from "react";
 import "./index.css"; // Import the CSS file
 
 const EntryComponent = ({ entry }) => {
-    // Destructure the entry object to access its properties
-    const { AVAILABILITY, BOTANICAL, COMMON, LIGHT, PRICE, ZONE } = entry;
+  const { datum, titel, spst, frei, uhrzeit } = entry;
 
-    // Get the numeric value from the PRICE property
-    const priceValue = parseFloat(PRICE[0].substring(1));
+  const entryStyle = {
+    display: "flex",
+    flexDirection: "row",
+    border: "1px solid black",
+    marginBottom: "5px",
+    padding: "5px",
+  };
 
-    // Determine the background color for the PRICE button
-    let priceButtonStyle = {};
-    if (priceValue >= 0 && priceValue < 4) {
-        priceButtonStyle.backgroundColor = "lightgreen";
-    } else if (priceValue >= 4 && priceValue < 6) {
-        priceButtonStyle.backgroundColor = "lightyellow";
-    } else if (priceValue >= 6) {
-        priceButtonStyle.backgroundColor = "lightcoral";
+  const getButtonBackgroundColor = (spstnr) => {
+    if (spstnr === "1") {
+      return "#F49800";
+    } else if (spstnr === "2") {
+      return "#0E2C51";
+    } else {
+      return "lightgray";
     }
+  };
 
-    // Style for the entry component
-    const entryStyle = {
-        display: "flex",
-        flexDirection: "row",
-        border: "1px solid black",
-        marginBottom: "5px",
-        padding: "5px",
-    };
+  const getFreiTextColor = (freiValue) => {
+    if (freiValue === "0") {
+      return "#D6D6D6";
+    } else if (freiValue > 0 && freiValue <= 5) {
+      return "#D6D6D6";
+    } else if (freiValue > 5 && freiValue <= 50) {
+      return "#FF0000";
+    } else {
+      return "#000000";
+    }
+  };
 
-    // Style for the property buttons
-    const buttonStyle = {
-        marginRight: "5px",
-        padding: "5px",
-        borderRadius: "5px",
-        backgroundColor: "lightgray", // Set the default background color to gray
-    };
+  const getIconUrl = (freiValue) => {
+    if (freiValue === "0") {
+      return "https://cdn-icons-png.flaticon.com/512/4866/4866637.png";
+    } else if (freiValue > 0 && freiValue <= 5) {
+      return "https://cdn-icons-png.flaticon.com/512/4866/4866637.png";
+    } else if (freiValue > 5 && freiValue <= 50) {
+      return "https://cdn-icons-png.flaticon.com/512/2844/2844658.png";
+    } else {
+      return "https://cdn-icons-png.flaticon.com/512/18/18609.png";
+    }
+  };
 
-    return (
-        <div style={entryStyle}>
-            <div style={buttonStyle}>{AVAILABILITY[0]}</div>
-            <div style={buttonStyle}>{BOTANICAL[0]}</div>
-            <div style={buttonStyle}>{COMMON[0]}</div>
-            <div style={buttonStyle}>{LIGHT[0]}</div>
-            <div style={{ ...buttonStyle, ...priceButtonStyle }}>
-                {PRICE[0]}
-            </div>
-            <div style={buttonStyle}>{ZONE[0]}</div>
-        </div>
-    );
+  const spstnr = spst[0]?.spstnr[0] || "";
+
+  const wochentagButtonStyle = {
+    marginRight: "5px",
+    padding: "5px",
+    borderRadius: "5px",
+  };
+
+  const datumButtonStyle = {
+    marginRight: "5px",
+    padding: "5px",
+    borderRadius: "5px",
+  };
+
+  const uhrzeitButtonStyle = {
+    marginRight: "5px",
+    padding: "5px",
+    borderRadius: "5px",
+  };
+
+const titleButtonStyle = {
+  marginRight: "5px",
+  padding: "5px",
+  borderRadius: "5px",
+  backgroundColor: getButtonBackgroundColor(spstnr),
+  color: "white", 
+};
+
+  const freiTextStyle = {
+    marginRight: "5px",
+    padding: "5px",
+    borderRadius: "5px",
+    color: getFreiTextColor(frei),
+    backgroundColor: frei === "0" ? "#D6D6D6" : "transparent",
+  };
+
+  const iconUrl = getIconUrl(frei);
+
+  const iconStyle = {
+    width: "30px",
+    height: "30px",
+    marginLeft: "5px",
+  };
+
+  let freiContent;
+  if (frei === "0") {
+    freiContent = "ausverkauft";
+  } else if (frei === "1") {
+    freiContent = `noch ${frei} Ticket verfügbar`;
+  } else {
+    freiContent = `noch ${frei} Tickets verfügbar`;
+  }
+
+const getWochentag = (datum) => {
+  const weekdays = [
+    "Sonntag",
+    "Montag",
+    "Dienstag",
+    "Mittwoch",
+    "Donnerstag",
+    "Freitag",
+    "Samstag",
+  ];
+
+  const dateString = datum[0];
+  const dateParts = dateString.split(".");
+  const day = parseInt(dateParts[0], 10);
+  const month = parseInt(dateParts[1], 10);
+  const year = parseInt(dateParts[2], 10);
+
+  const date = new Date(year, month - 1, day);
+  const wochentag = date.getDay();
+  return weekdays[wochentag];
+};
+
+
+  const wochentag = getWochentag(datum);
+
+  return (
+    <div style={entryStyle}>
+      <div style={wochentagButtonStyle}>{wochentag}</div>
+      <div style={datumButtonStyle}>{datum}</div>
+      <div style={uhrzeitButtonStyle}>{uhrzeit} Uhr</div>
+      <div style={titleButtonStyle}>{titel}</div>
+      <div style={freiTextStyle}>{freiContent}</div>
+      <img src={iconUrl} alt="Icon" style={iconStyle} />
+    </div>
+  );
 };
 
 const Ticketfetch = () => {
-    const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
-    useEffect(() => {
-        fetch("/api/xml") // Replace with your JSON endpoint
-            .then((response) => response.json())
-            .then((jsonData) => {
-                console.log(jsonData.CATALOG.PLANT);
-                setData(jsonData.CATALOG.PLANT); // Set the data state to jsonData.CATALOG.PLANT
-            })
-            .catch((error) => console.error("Error:", error));
-    }, []);
+  useEffect(() => {
+    fetch("/api/xml") // Replace with your backend API endpoint
+      .then((response) => response.json())
+      .then((jsonData) => {
+        console.log(jsonData);
+        setData(jsonData.vst);
+      })
+      .catch((error) => console.error("Error:", error));
+  }, []);
 
-    const filteredData = Array.isArray(data)
-        ? data.filter((entry) => entry.ZONE[0] === "4")
-        : [];
-
-    return (
-        <div>
-            {filteredData.map((entry, index) => (
-                <EntryComponent key={index} entry={entry} />
-            ))}
-        </div>
-    );
+  return (
+    <div>
+      {data.map((entry, index) => (
+        <EntryComponent key={index} entry={entry} />
+      ))}
+    </div>
+  );
 };
 
 export default Ticketfetch;
