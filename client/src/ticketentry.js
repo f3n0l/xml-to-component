@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./index.css"; // Import the CSS file
 
 const EntryComponent = ({ entry }) => {
-  const { datum, titel, spst, frei, uhrzeit } = entry;
+  const { datum, titel, uhrzeit, spst, frei, theaweb, genre } = entry;
 
   const entryStyle = {
     display: "flex",
@@ -23,11 +23,12 @@ const EntryComponent = ({ entry }) => {
   };
 
   const getFreiTextColor = (freiValue) => {
-    if (freiValue === "0") {
+    const freiNumber = Number(freiValue);
+    if (freiNumber === 0) {
       return "#D6D6D6";
-    } else if (freiValue > 0 && freiValue <= 5) {
+    } else if (freiNumber > 0 && freiNumber <= 5) {
       return "#D6D6D6";
-    } else if (freiValue > 5 && freiValue <= 50) {
+    } else if (freiNumber > 5 && freiNumber <= 50) {
       return "#FF0000";
     } else {
       return "#000000";
@@ -35,24 +36,35 @@ const EntryComponent = ({ entry }) => {
   };
 
   const getIconUrl = (freiValue) => {
-    if (freiValue === "0") {
-      return "https://cdn-icons-png.flaticon.com/512/4866/4866637.png";
-    } else if (freiValue > 0 && freiValue <= 5) {
-      return "https://cdn-icons-png.flaticon.com/512/4866/4866637.png";
-    } else if (freiValue > 5 && freiValue <= 50) {
-      return "https://cdn-icons-png.flaticon.com/512/2844/2844658.png";
+    const freiNumber = Number(freiValue);
+    if (freiNumber === 0) {
+      return "https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/6489b8617ae03fffc37cb13f_Doppelticket-frei-5.svg";
+    } else if (freiNumber > 0 && freiNumber <= 5) {
+      return "https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/6489b8617ae03fffc37cb13f_Doppelticket-frei-5.svg";
+    } else if (freiNumber > 5 && freiNumber <= 50) {
+      return "https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/6489b865d4ff2a8fe8e9a660_Doppelticket-frei-50.svg";
     } else {
-      return "https://cdn-icons-png.flaticon.com/512/18/18609.png";
+      return "https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/646dde73ae9c80790abd0b9e_Doppelticket.svg";
     }
   };
 
   const spstnr = spst[0]?.spstnr[0] || "";
+  const verkaufStatus = theaweb[0]?.verkauf[0] || "";
 
-  const titleButtonStyle = {
+  const genreButtonStyle = {
+    marginRight: "5px",
+    padding: "5px",
+    borderRadius: "5px",
+    backgroundColor: genre?.includes("Test1") ? "#1C1C1C" : "transparent",
+  };
+
+  const titleLinkStyle = {
     marginRight: "5px",
     padding: "5px",
     borderRadius: "5px",
     backgroundColor: getButtonBackgroundColor(spstnr),
+    color: "white",
+    textDecoration: "none",
   };
 
   const datumButtonStyle = {
@@ -61,44 +73,70 @@ const EntryComponent = ({ entry }) => {
     borderRadius: "5px",
   };
 
-  const freiTextStyle = {
-    marginRight: "5px",
-    padding: "5px",
-    borderRadius: "5px",
-    color: getFreiTextColor(frei),
-    backgroundColor: frei === "0" ? "#D6D6D6" : "transparent",
-  };
-
   const uhrzeitButtonStyle = {
     marginRight: "5px",
     padding: "5px",
     borderRadius: "5px",
   };
 
-  const iconUrl = getIconUrl(frei);
-
-  const iconStyle = {
-    width: "30px",
-    height: "30px",
-    marginLeft: "5px",
+  const wochentagButtonStyle = {
+    marginRight: "5px",
+    padding: "5px",
+    borderRadius: "5px",
   };
 
-  let freiContent;
-  if (frei === "0") {
+const freiTextStyle = {
+  marginRight: "5px",
+  padding: "5px",
+  borderRadius: "5px",
+  color: getFreiTextColor(frei[0]), // Update this line
+//   backgroundColor: frei[0] === "0" ? "#D6D6D6" : "transparent",
+};
+
+  const iconUrl = getIconUrl(frei[0]);
+
+const iconStyle = {
+  width: "30px",
+  height: "30px",
+  marginLeft: "5px",
+//   backgroundColor: frei[0] === "0" ? "#D6D6D6" : "transparent",
+};
+
+let freiContent;
+const freiNumber = Number(frei[0]); // Update this line
+  if (freiNumber === 0) {
     freiContent = "ausverkauft";
-  } else if (frei === "1") {
-    freiContent = `noch ${frei} Ticket verfügbar`;
+  } else if (freiNumber === 1) {
+    freiContent = `noch ${freiNumber} Ticket verfügbar`;
   } else {
-    freiContent = `noch ${frei} Tickets verfügbar`;
+    freiContent = `noch ${freiNumber} Tickets verfügbar`;
   }
+
+  const [day, month, year] = datum[0]?.split(".") || [];
+  const dateObject = new Date(year, month - 1, day);
+  const wochentag = dateObject.toLocaleDateString("de-DE", { weekday: "long" });
+
+  const monthName = dateObject.toLocaleDateString("de-DE", { month: "long" });
+
+  const formattedDatum = `${day}. ${monthName}`;
 
   return (
     <div style={entryStyle}>
-      <div style={datumButtonStyle}>{datum}</div>
+      <div style={wochentagButtonStyle}>{wochentag}</div>
+      <div style={datumButtonStyle}>{formattedDatum}</div>
       <div style={uhrzeitButtonStyle}>{uhrzeit} Uhr</div>
-      <div style={titleButtonStyle}>{titel}</div>
-      <div style={freiTextStyle}>{freiContent}</div>
-      <img src={iconUrl} alt="Icon" style={iconStyle} />
+      <a
+        href={verkaufStatus !== "N" ? "https://wikipedia.org" : undefined}
+        style={titleLinkStyle}
+      >
+        {titel}
+      </a>
+      {/* {verkaufStatus !== "N" && ( */}
+        <>
+          <div style={freiTextStyle}>{freiContent}</div>
+          <img src={iconUrl} alt="Icon" style={iconStyle} />
+        </>
+      {/* )} */}
     </div>
   );
 };
