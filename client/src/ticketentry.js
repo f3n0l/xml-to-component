@@ -48,10 +48,11 @@ const EntryComponent = ({ entry }) => {
 
   const spstnr = spst[0]?.spstnr[0] || "";
 
-  const wochentagButtonStyle = {
+  const titleButtonStyle = {
     marginRight: "5px",
     padding: "5px",
     borderRadius: "5px",
+    backgroundColor: getButtonBackgroundColor(spstnr),
   };
 
   const datumButtonStyle = {
@@ -60,26 +61,18 @@ const EntryComponent = ({ entry }) => {
     borderRadius: "5px",
   };
 
-  const uhrzeitButtonStyle = {
-    marginRight: "5px",
-    padding: "5px",
-    borderRadius: "5px",
-  };
-
-const titleButtonStyle = {
-  marginRight: "5px",
-  padding: "5px",
-  borderRadius: "5px",
-  backgroundColor: getButtonBackgroundColor(spstnr),
-  color: "white", 
-};
-
   const freiTextStyle = {
     marginRight: "5px",
     padding: "5px",
     borderRadius: "5px",
     color: getFreiTextColor(frei),
     backgroundColor: frei === "0" ? "#D6D6D6" : "transparent",
+  };
+
+  const uhrzeitButtonStyle = {
+    marginRight: "5px",
+    padding: "5px",
+    borderRadius: "5px",
   };
 
   const iconUrl = getIconUrl(frei);
@@ -99,34 +92,8 @@ const titleButtonStyle = {
     freiContent = `noch ${frei} Tickets verfügbar`;
   }
 
-const getWochentag = (datum) => {
-  const weekdays = [
-    "Sonntag",
-    "Montag",
-    "Dienstag",
-    "Mittwoch",
-    "Donnerstag",
-    "Freitag",
-    "Samstag",
-  ];
-
-  const dateString = datum[0];
-  const dateParts = dateString.split(".");
-  const day = parseInt(dateParts[0], 10);
-  const month = parseInt(dateParts[1], 10);
-  const year = parseInt(dateParts[2], 10);
-
-  const date = new Date(year, month - 1, day);
-  const wochentag = date.getDay();
-  return weekdays[wochentag];
-};
-
-
-  const wochentag = getWochentag(datum);
-
   return (
     <div style={entryStyle}>
-      <div style={wochentagButtonStyle}>{wochentag}</div>
       <div style={datumButtonStyle}>{datum}</div>
       <div style={uhrzeitButtonStyle}>{uhrzeit} Uhr</div>
       <div style={titleButtonStyle}>{titel}</div>
