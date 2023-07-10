@@ -32,7 +32,7 @@ const EntryComponent = ({ entry }) => {
         marginRight: "5px",
         padding: "5px",
         borderRadius: "5px",
-        backgroundColor: "lightgray", // Set the default background color to gray
+        backgroundColor: "lightgray", 
     };
 
     return (
@@ -57,7 +57,7 @@ const Ticketfetch = () => {
             .then((response) => response.json())
             .then((jsonData) => {
                 console.log(jsonData.CATALOG.PLANT);
-                setData(jsonData.CATALOG.PLANT); // Set the data state to jsonData.CATALOG.PLANT
+                setData(jsonData.CATALOG.PLANT); // Set the data state 
             })
             .catch((error) => console.error("Error:", error));
     }, []);
@@ -68,7 +68,7 @@ const Ticketfetch = () => {
 
     return (
         <div>
-            {filteredData.map((entry, index) => (
+            {filteredData.map((entry, index) => ( 
                 <EntryComponent key={index} entry={entry} />
             ))}
         </div>
