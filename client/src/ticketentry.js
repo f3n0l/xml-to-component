@@ -54,36 +54,31 @@ const EntryComponent = ({ entry }) => {
     const deadline = new Date("2023-07-01"); // Replace with your desired deadline = VERKAUFSSTART
     const currentDate = new Date();
 
+    const titleLinkHref =
+        new Date() < deadline
+            ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
+            : theaweb[0]?.verkauf[0] !== "N"
+                ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${entry.id}`
+                : undefined;
+
     const titleLinkStyle = {
         marginRight: "5px",
         padding: "5px",
         borderRadius: "5px",
         backgroundColor:
             new Date() >= deadline
-                ? verkaufStatus === "N"
+                ? theaweb[0]?.verkauf[0] === "N"
                     ? "#D6D6D6"
-                    : genre &&
-                        (genre.includes("Test1;Test2_Test3") || //Ändern in Kindergarten- und Schulvorstellung
-                            genre.includes("Event") ||
-                            genre.includes("Gastspiel"))
+                    : (genre.includes("Test1;Test2_Test3") || genre.includes("Event") || genre.includes("Gastspiel"))
                         ? "#1C1C1C"
                         : getButtonBackgroundColor(spstnr)
-                : genre &&
-                    (genre.includes("Test1;Test2_Test3") || //Ändern in Kindergarten- und Schulvorstellung
-                        genre.includes("Event") ||
-                        genre.includes("Gastspiel"))
+                : (genre.includes("Test1;Test2_Test3") || genre.includes("Event") || genre.includes("Gastspiel"))
                     ? "#1C1C1C"
                     : getButtonBackgroundColor(spstnr),
         color: "white",
         textDecoration: "none",
-        pointerEvents:
-            new Date() >= deadline || verkaufStatus !== "N" ? "auto" : "none",
+        pointerEvents: new Date() >= deadline || new Date() < deadline ? "auto" : "none",
     };
-
-
-
-
-
 
     const datumButtonStyle = {
         marginRight: "5px",
@@ -163,9 +158,6 @@ const EntryComponent = ({ entry }) => {
             )}
         </div>
     );
-
-
-
 };
 
 const Ticketfetch = () => {
