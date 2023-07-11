@@ -5,8 +5,8 @@ const server = Server(app);
 const path = require("path");
 const compression = require("compression");
 
-var parseString = require("xml2js").parseString;
-var https = require("https");
+const parseString = require("xml2js").parseString;
+const https = require("https");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(compression());
@@ -16,8 +16,8 @@ app.use(express.json());
 
 app.get("/api/xml", async (request, response) => {
     function xmlToJson(url, callback) {
-        var req = https.get(url, function (res) {
-            var xml = "";
+        const req = https.get(url, function (res) {
+            let xml = "";
 
             res.on("data", function (chunk) {
                 xml += chunk;
@@ -38,7 +38,7 @@ app.get("/api/xml", async (request, response) => {
             });
         });
     }
-    var url = "https://www.w3schools.com/xml/plant_catalog.xml";
+    const url = "https://www.w3schools.com/xml/plant_catalog.xml";
     xmlToJson(url, function (err, data) {
         console.log(data);
         if (err) {
