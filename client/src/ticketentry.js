@@ -58,16 +58,32 @@ const EntryComponent = ({ entry }) => {
         marginRight: "5px",
         padding: "5px",
         borderRadius: "5px",
-        backgroundColor: getButtonBackgroundColor(spstnr),
+        backgroundColor:
+            new Date() >= deadline
+                ? verkaufStatus === "N"
+                    ? "#D6D6D6"
+                    : genre &&
+                        (genre.includes("Test1;Test2_Test3") || //Ändern in Kindergarten- und Schulvorstellung
+                            genre.includes("Event") ||
+                            genre.includes("Gastspiel"))
+                        ? "#1C1C1C"
+                        : getButtonBackgroundColor(spstnr)
+                : genre &&
+                    (genre.includes("Test1;Test2_Test3") || //Ändern in Kindergarten- und Schulvorstellung
+                        genre.includes("Event") ||
+                        genre.includes("Gastspiel"))
+                    ? "#1C1C1C"
+                    : getButtonBackgroundColor(spstnr),
         color: "white",
         textDecoration: "none",
         pointerEvents:
-            currentDate < deadline
-                ? "none"
-                : verkaufStatus === "N"
-                ? "none"
-                : "auto",
+            new Date() >= deadline || verkaufStatus !== "N" ? "auto" : "none",
     };
+
+
+
+
+
 
     const datumButtonStyle = {
         marginRight: "5px",
@@ -129,17 +145,17 @@ const EntryComponent = ({ entry }) => {
             <div style={uhrzeitButtonStyle}>{uhrzeit} Uhr</div>
             <a
                 href={
-                    currentDate < deadline
-                        ? "https://freilichtbuehne-freudenberg.de/tickets/countdown-vorverkauf"
+                    new Date() < deadline
+                        ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
                         : verkaufStatus !== "N"
-                        ? "https://wikipedia.org"
-                        : undefined
+                            ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${entry.id}`
+                            : undefined
                 }
                 style={titleLinkStyle}
             >
                 {titel}
             </a>
-            {verkaufStatus !== "N" && (
+            {new Date() >= deadline && verkaufStatus !== "N" && (
                 <>
                     <div style={freiTextStyle}>{freiContent}</div>
                     <img src={iconUrl} alt="Icon" style={iconStyle} />
@@ -147,6 +163,9 @@ const EntryComponent = ({ entry }) => {
             )}
         </div>
     );
+
+
+
 };
 
 const Ticketfetch = () => {
