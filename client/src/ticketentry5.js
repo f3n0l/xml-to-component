@@ -55,17 +55,14 @@ const EntryComponent = ({ entry }) => {
     const deadline = new Date("2023-07-01"); // Replace with your desired deadline = VERKAUFSSTART
     const currentDate = new Date();
 
-    //     const titleLinkHref =
-    //         new Date() < deadline
-    //             ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
-    //             : theaweb[0]?.verkauf[0] !== "N"
-    //             ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
-    //             : undefined;
-    // const ident = entry["@attributes"]?.ident;
-    console.log(entry["$"].ident);
     const ident = entry["$"].ident || "";
 
-    const isGenreMatch = genre && genre.includes("Test1;Test2_Test3");
+    const isGenreMatch =
+        genre && (genre.includes("Event") || genre.includes("Gastspiel"));
+
+    if (!isGenreMatch) {
+        return null; // Don't render the component if the genre doesn't match
+    }
     const titleLinkHref = isGenreMatch
         ? "https://freilichtbuehne-freudenberg.de/tickets/reservierung/formular-reservierung-kindergarten-schulvorstellungen"
         : new Date() < deadline
@@ -170,7 +167,12 @@ const EntryComponent = ({ entry }) => {
                 }
                 style={titleLinkStyle}
             >
-                {titel}
+                {titel}{" "}
+                <img
+                    src="https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/646dcb8c63dae48be19469c4_Chevron-rechts.svg"
+                    alt="Icon"
+                    style={{ maxHeight: "25px", height: "20px" }}
+                />
             </a>
             {new Date() >= deadline && verkaufStatus !== "N" && (
                 <>

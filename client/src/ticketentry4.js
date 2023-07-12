@@ -50,6 +50,9 @@ const EntryComponent = ({ entry }) => {
     };
 
     const spstnr = spst[0]?.spstnr[0] || "";
+    if (spstnr !== "2") {
+        return null; // Don't render the component if spstnr is not 1
+    }
     const verkaufStatus = theaweb[0]?.verkauf[0] || "";
 
     const deadline = new Date("2023-07-01"); // Replace with your desired deadline = VERKAUFSSTART
@@ -170,7 +173,12 @@ const EntryComponent = ({ entry }) => {
                 }
                 style={titleLinkStyle}
             >
-                {titel}
+                {titel}{" "}
+                <img
+                    src="https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/646dcb8c63dae48be19469c4_Chevron-rechts.svg"
+                    alt="Icon"
+                    style={{ maxHeight: "25px", height: "20px" }}
+                />
             </a>
             {new Date() >= deadline && verkaufStatus !== "N" && (
                 <>

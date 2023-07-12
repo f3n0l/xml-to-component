@@ -181,7 +181,12 @@ const EntryComponent = ({ entry }) => {
                 }
                 style={titleLinkStyle}
             >
-                {titel}
+                {titel}{" "}
+                <img
+                    src="https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/646dcb8c63dae48be19469c4_Chevron-rechts.svg"
+                    alt="Icon"
+                    style={{ maxHeight: "25px", height: "20px" }}
+                />
             </a>
             <div style={uhrzeitButtonStyle}>{genre}</div>
             {new Date() >= deadline && verkaufStatus !== "N" && (

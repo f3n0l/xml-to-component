@@ -66,6 +66,9 @@ const EntryComponent = ({ entry }) => {
     const ident = entry["$"].ident || "";
 
     const isGenreMatch = genre && genre.includes("Test1;Test2_Test3");
+    if (!isGenreMatch) {
+        return null; // Don't render the component if the genre doesn't match
+    }
     const titleLinkHref = isGenreMatch
         ? "https://freilichtbuehne-freudenberg.de/tickets/reservierung/formular-reservierung-kindergarten-schulvorstellungen"
         : new Date() < deadline
@@ -170,7 +173,12 @@ const EntryComponent = ({ entry }) => {
                 }
                 style={titleLinkStyle}
             >
-                {titel}
+                {titel}{" "}
+                <img
+                    src="https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/646dcb8c63dae48be19469c4_Chevron-rechts.svg"
+                    alt="Icon"
+                    style={{ maxHeight: "25px", height: "20px" }}
+                />
             </a>
             {new Date() >= deadline && verkaufStatus !== "N" && (
                 <>
