@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./index.css"; // Import the CSS file
+// import { useParams } from "react-router-dom";
 
 const EntryComponent = ({ entry }) => {
     const { datum, titel, uhrzeit, spst, frei, theaweb, genre } = entry;
@@ -54,12 +55,24 @@ const EntryComponent = ({ entry }) => {
     const deadline = new Date("2023-07-01"); // Replace with your desired deadline = VERKAUFSSTART
     const currentDate = new Date();
 
-    const titleLinkHref =
-        new Date() < deadline
-            ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
-            : theaweb[0]?.verkauf[0] !== "N"
-                ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${entry.id}`
-                : undefined;
+    //     const titleLinkHref =
+    //         new Date() < deadline
+    //             ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
+    //             : theaweb[0]?.verkauf[0] !== "N"
+    //             ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
+    //             : undefined;
+    // const ident = entry["@attributes"]?.ident;
+    console.log(entry["$"].ident);
+    const ident = entry["$"].ident || "";
+
+    const isGenreMatch = genre && genre.includes("Test1;Test2_Test3");
+    const titleLinkHref = isGenreMatch
+        ? "https://freilichtbuehne-freudenberg.de/tickets/reservierung/formular-reservierung-kindergarten-schulvorstellungen"
+        : new Date() < deadline
+        ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
+        : verkaufStatus !== "N"
+        ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
+        : undefined;
 
     const titleLinkStyle = {
         marginRight: "5px",
@@ -69,15 +82,20 @@ const EntryComponent = ({ entry }) => {
             new Date() >= deadline
                 ? theaweb[0]?.verkauf[0] === "N"
                     ? "#D6D6D6"
-                    : (genre.includes("Test1;Test2_Test3") || genre.includes("Event") || genre.includes("Gastspiel"))
-                        ? "#1C1C1C"
-                        : getButtonBackgroundColor(spstnr)
-                : (genre.includes("Test1;Test2_Test3") || genre.includes("Event") || genre.includes("Gastspiel"))
+                    : genre.includes("Test1;Test2_Test3") ||
+                      genre.includes("Event") ||
+                      genre.includes("Gastspiel")
                     ? "#1C1C1C"
-                    : getButtonBackgroundColor(spstnr),
+                    : getButtonBackgroundColor(spstnr)
+                : genre.includes("Test1;Test2_Test3") ||
+                  genre.includes("Event") ||
+                  genre.includes("Gastspiel")
+                ? "#1C1C1C"
+                : getButtonBackgroundColor(spstnr),
         color: "white",
         textDecoration: "none",
-        pointerEvents: new Date() >= deadline || new Date() < deadline ? "auto" : "none",
+        pointerEvents:
+            new Date() >= deadline || new Date() < deadline ? "auto" : "none",
     };
 
     const datumButtonStyle = {
@@ -136,20 +154,36 @@ const EntryComponent = ({ entry }) => {
     return (
         <div style={entryStyle}>
             <div style={wochentagButtonStyle}>{wochentag}</div>
+            <div
+            //  style={separatorStyle}
+            >
+                |
+            </div>{" "}
+            {/* Add a separator div */}
             <div style={datumButtonStyle}>{formattedDatum}</div>
+            <div
+            //  style={separatorStyle}
+            >
+                |
+            </div>{" "}
             <div style={uhrzeitButtonStyle}>{uhrzeit} Uhr</div>
             <a
                 href={
                     new Date() < deadline
                         ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
                         : verkaufStatus !== "N"
-                            ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${entry.id}`
-                            : undefined
+                        ? (genre && genre.includes("Test1;Test2_Test3")) ||
+                          genre.includes("Event") ||
+                          genre.includes("Gastspiel")
+                            ? "https://freilichtbuehne-freudenberg.de/tickets/reservierung/formular-reservierung-kindergarten-schulvorstellungen"
+                            : `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
+                        : undefined
                 }
                 style={titleLinkStyle}
             >
                 {titel}
             </a>
+            <div style={uhrzeitButtonStyle}>{genre}</div>
             {new Date() >= deadline && verkaufStatus !== "N" && (
                 <>
                     <div style={freiTextStyle}>{freiContent}</div>
