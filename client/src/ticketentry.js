@@ -217,7 +217,7 @@ const Ticketfetch = () => {
     }, []);
 
     return (
-        <div>
+        <div class="mainContainer">
             {data.map((entry, index) => (
                 <EntryComponent key={index} entry={entry} />
             ))}

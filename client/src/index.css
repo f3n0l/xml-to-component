@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family:
+    font-family: "Helvetica",
 
         -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
         "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
@@ -15,6 +15,12 @@ body {
 
 }
 
+/* //hide navbar */
+
+/* nav {
+    display: none
+} */
+
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
         monospace;
@@ -25,11 +31,15 @@ code {
 .entry {
     display: flex;
     flex-direction: row;
-    box-shadow: 0 3px 1px rgb(0 0 0 / 0.1);
+
     margin-bottom: 5px;
     padding-left: 5px;
     /* justify-content: space-between; */
 
+}
+
+.entry:hover {
+    box-shadow: 0 3px 1px rgb(0 0 0 / 0.1);
 }
 
 .property-button {
@@ -91,34 +101,61 @@ code {
         padding-left: 40px;
     }
 
+    .mainContainer {
+        display: flex;
+        flex-wrap: wrap;
+        flex-shrink: initial
+    }
+
     .entry {
         display: flex;
         flex-direction: column !important;
-
+        box-shadow: 0 3px 1px rgb(0 0 0 / 0.1);
+        width: 100%
     }
+
 
     .firstContainer {
         margin-top: 5px;
         margin-bottom: 10px;
-        width: 100%
+
     }
 
     .secondContainer {
         margin-bottom: 10px;
         flex-direction: column !important;
         align-items: start;
+
     }
 
     .thirdContainer {
         margin-bottom: 5px;
     }
 
+
+
+
+}
+
+@media(min-width:1103) {
+    .secondContainer {
+        width: 500px
+    }
+}
+
+@media (min-width: 1180px) {
     .titelLink {
-        /* padding-left: px; */
+        width: 50%
     }
 
+    .secondContainer {
+        width: 550px;
+    }
 
-
+    .genre {
+        width: 50%;
+        margin-left: 20px
+    }
 }
 
 @media (max-width: 600px) {
@@ -130,7 +167,11 @@ code {
     .entry {
         display: flex;
         flex-direction: column !important;
-        box-shadow: none;
+        /* box-shadow: none; */
+    }
+
+    .entry {
+        box-shadow: 0 3px 1px rgb(0 0 0 / 0.1);
     }
 
     .firstContainer {
