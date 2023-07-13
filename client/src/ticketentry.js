@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "./index.css"; // Import the CSS file
 
+// see new file "ticketshop" for more complex filter functionality
+
 const EntryComponent = ({ entry }) => {
     // Destructure the entry object to access its properties
     const { AVAILABILITY, BOTANICAL, COMMON, LIGHT, PRICE, ZONE } = entry;
@@ -32,7 +34,7 @@ const EntryComponent = ({ entry }) => {
         marginRight: "5px",
         padding: "5px",
         borderRadius: "5px",
-        backgroundColor: "lightgray", 
+        backgroundColor: "lightgray",
     };
 
     return (
@@ -68,7 +70,7 @@ const Ticketfetch = () => {
 
     return (
         <div>
-            {filteredData.map((entry, index) => ( 
+            {filteredData.map((entry, index) => (
                 <EntryComponent key={index} entry={entry} />
             ))}
         </div>
