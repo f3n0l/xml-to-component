@@ -1,10 +1,18 @@
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    font-family:
+
+        -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
         "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
         "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+
 }
 
 code {
@@ -17,9 +25,11 @@ code {
 .entry {
     display: flex;
     flex-direction: row;
-    border: 1px solid black;
+    box-shadow: 0 3px 1px rgb(0 0 0 / 0.1);
     margin-bottom: 5px;
-    padding: 5px;
+    padding-left: 5px;
+    /* justify-content: space-between; */
+
 }
 
 .property-button {
@@ -28,3 +38,143 @@ code {
     background-color: lightgray;
     border-radius: 5px;
 }
+
+.arrowIcon {
+    height: 1.2rem
+}
+
+
+.titelLink {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    text-justify: center;
+    margin-right: 900px;
+    width: 70%;
+    height: 26px
+}
+
+
+
+.seperator {
+    font-size: 12px;
+}
+
+
+.firstContainer {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+    margin-right: 80px;
+    width: 300px
+}
+
+.secondContainer {
+    display: flex;
+    width: 400px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.thirdContainer {
+    display: flex;
+    width: 250px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+@media (min-width: 600px) and (max-width: 1103px) {
+    body {
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+
+    .entry {
+        display: flex;
+        flex-direction: column !important;
+
+    }
+
+    .firstContainer {
+        margin-top: 5px;
+        margin-bottom: 10px;
+        width: 100%
+    }
+
+    .secondContainer {
+        margin-bottom: 10px;
+        flex-direction: column !important;
+        align-items: start;
+    }
+
+    .thirdContainer {
+        margin-bottom: 5px;
+    }
+
+    .titelLink {
+        /* padding-left: px; */
+    }
+
+
+
+}
+
+@media (max-width: 600px) {
+    body {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .entry {
+        display: flex;
+        flex-direction: column !important;
+        box-shadow: none;
+    }
+
+    .firstContainer {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        width: 100%
+    }
+
+    .secondContainer {
+        margin-bottom: 5px;
+        flex-direction: column !important;
+        align-items: start;
+    }
+
+    .thirdContainer {
+        margin-bottom: 5px;
+    }
+
+    .titelLink {
+        /* padding-left: px; */
+    }
+
+
+
+}
+
+/* .wochentag{
+
+}.datum{
+
+}
+
+.uhrzeit{
+
+}
+
+.genre{
+
+}
+
+.freieTickets{
+
+}
+
+.ticketIcon{
+
+} */
