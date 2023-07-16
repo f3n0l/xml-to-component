@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(compression());
 app.use(express.json());
 
-/////////////////////////////// fetch xml from assigned URL and send to frontend
+/////////////////////////////// fetch xml from assigned URL, convert to json and send to frontend
 
 app.get("/api/xml", async (request, response) => {
     function xmlToJson(url, callback) {
