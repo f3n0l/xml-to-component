@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import "./index.css"; // Import the CSS file
 
-// see new file "ticketshop" for more complex filter functionality
+// see new repo "ticketshop" for more complex filter functionality
 // simple fetch and map operation from XML to JSON coversion
+
 
 
 const EntryComponent = ({ entry }) => {
