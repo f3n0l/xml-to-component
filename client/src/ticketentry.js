@@ -58,7 +58,7 @@ const Ticketfetch = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetch("/api/xml") // Replace with your JSON endpoint
+        fetch("/api/xml") // fetch from json endpoint
             .then((response) => response.json())
             .then((jsonData) => {
                 console.log(jsonData.CATALOG.PLANT);
@@ -77,7 +77,7 @@ const Ticketfetch = () => {
                 <EntryComponent key={index} entry={entry} />
             ))}
         </div>
-    );
+    ); // maps through entries
 };
 
 export default Ticketfetch;
