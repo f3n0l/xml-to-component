@@ -14,7 +14,6 @@ app.use(express.json());
 
 /////////////////////////////// Change URL Below
 
-
 app.get("/api/xml", async (request, response) => {
     function xmlToJson(url, callback) {
         var req = https.get(url, function (res) {
@@ -41,19 +40,29 @@ app.get("/api/xml", async (request, response) => {
     }
 
     // Change ending of url according to the date needed:
-    var url = "https://freilichtbuehne-freudenberg-tickets.de/cbn/cbn.php?document=spielplxml&von=01.01.2023&bis=31.12.2023";
+    var url =
+        "https://freilichtbuehne-freudenberg-tickets.de/cbn/cbn.php?document=spielplxml&von=01.01.2023&bis=31.12.2023";
     xmlToJson(url, function (err, data) {
         console.log(data.spielplan.vst);
         if (err) {
             return console.err(err);
         }
-        
+
         response.json(data.spielplan);
     });
 });
 
-
 ///////////////////////////////
+
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("/", function (req, res) {
+    res.sendFile(path.resolve(__dirname, "build", "index.html"));
+});
+
+app.get("*", function (req, res) {
+    res.sendFile(path.resolve(__dirname, "build", "index.html"));
+});
 
 server.listen(process.env.PORT || 3001, () => {
     console.log("I'm listening.");
