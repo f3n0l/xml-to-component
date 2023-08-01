@@ -65,22 +65,21 @@ const EntryComponent = ({ entry }) => {
     console.log(entry["$"].ident);
     const ident = entry["$"].ident || "";
 
-
     ////////////////// CHANGE GENRE NAME
-    const isGenreMatch = genre && genre.includes("Test1;Test2_Test3");
+    const isGenreMatch =
+        genre && genre.includes("Kindergarten- & Schulvorstellung");
 
     if (!isGenreMatch) {
         return null; // Don't render the component if the genre doesn't match
     }
 
-
     const titleLinkHref = isGenreMatch
         ? "https://freilichtbuehne-freudenberg.de/tickets/reservierung/formular-reservierung-kindergarten-schulvorstellungen"
         : new Date() < deadline
-            ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
-            : verkaufStatus !== "N"
-                ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
-                : undefined;
+        ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
+        : verkaufStatus !== "N"
+        ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
+        : undefined;
 
     const titleLinkStyle = {
         marginRight: "5px",
@@ -90,16 +89,12 @@ const EntryComponent = ({ entry }) => {
             new Date() >= deadline
                 ? theaweb[0]?.verkauf[0] === "N"
                     ? "#D6D6D6"
-                    : genre.includes("Test1;Test2_Test3") ||
-                        genre.includes("Event") ||
-                        genre.includes("Gastspiel")
-                        ? "#1C1C1C"
-                        : getButtonBackgroundColor(spstnr)
-                : genre.includes("Test1;Test2_Test3") ||
-                    genre.includes("Event") ||
-                    genre.includes("Gastspiel")
+                    : genre.includes("Event") || genre.includes("Gastspiel")
                     ? "#1C1C1C"
-                    : getButtonBackgroundColor(spstnr),
+                    : getButtonBackgroundColor(spstnr)
+                : genre.includes("Event") || genre.includes("Gastspiel")
+                ? "#1C1C1C"
+                : getButtonBackgroundColor(spstnr),
         color: "white",
         textDecoration: "none",
         pointerEvents:
@@ -159,60 +154,83 @@ const EntryComponent = ({ entry }) => {
 
     const formattedDatum = `${day}. ${monthName}`;
 
-
-
-
-
-
-    return (<div class="mainContainer">
-        <div style={entryStyle} class="entry"> <div class="firstContainer">
-            <div style={wochentagButtonStyle} class="wochentag">{wochentag}</div>
-            <div class="seperator"
-            //  style={separatorStyle}
-            >
-                |
-            </div>
-            {/* Add a separator div */}
-            <div style={datumButtonStyle} class="datum">{formattedDatum}</div>
-            <div class="seperator"
-            //  style={separatorStyle}
-            >
-                |
-            </div>
-            <div style={uhrzeitButtonStyle} class="uhrzeit">{uhrzeit} Uhr</div>
-        </div> <div class="secondContainer">
-                <a class="titelLink"
-                    href={
-                        new Date() < deadline
-                            ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
-                            : verkaufStatus !== "N"
-                                ? (genre && genre.includes("Test1;Test2_Test3")) ||
-                                    genre.includes("Event") ||
-                                    genre.includes("Gastspiel")
+    return (
+        <div class="mainContainer">
+            <div style={entryStyle} class="entry">
+                {" "}
+                <div class="firstContainer">
+                    <div style={wochentagButtonStyle} class="wochentag">
+                        {wochentag}
+                    </div>
+                    <div
+                        class="seperator"
+                        //  style={separatorStyle}
+                    >
+                        |
+                    </div>
+                    {/* Add a separator div */}
+                    <div style={datumButtonStyle} class="datum">
+                        {formattedDatum}
+                    </div>
+                    <div
+                        class="seperator"
+                        //  style={separatorStyle}
+                    >
+                        |
+                    </div>
+                    <div style={uhrzeitButtonStyle} class="uhrzeit">
+                        {uhrzeit} Uhr
+                    </div>
+                </div>{" "}
+                <div class="secondContainer">
+                    <a
+                        class="titelLink"
+                        href={
+                            new Date() < deadline
+                                ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
+                                : verkaufStatus !== "N"
+                                ? (genre &&
+                                      genre.includes(
+                                          "Kindergarten- & Schulvorstellung"
+                                      )) ||
+                                  genre.includes("Event") ||
+                                  genre.includes("Gastspiel")
                                     ? "https://freilichtbuehne-freudenberg.de/tickets/reservierung/formular-reservierung-kindergarten-schulvorstellungen"
                                     : `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
                                 : undefined
-                    }
-                    style={titleLinkStyle}
-                >
-                    {titel}{" "}
-                    <img
-                        src="https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/646dcb8c63dae48be19469c4_Chevron-rechts.svg"
-                        alt="Icon"
-                        style={{ maxHeight: "25px", height: "20px" }}
-                        class="arrowIcon"
-                    />
-                </a>
-                <div style={uhrzeitButtonStyle} class="genre">{genre}</div></div>
-            {
-                new Date() >= deadline && verkaufStatus !== "N" && (
-                    <> <div class="thirdContainer">
-                        <div style={freiTextStyle} class="freieTickets">{freiContent}</div>
-                        <img src={iconUrl} alt="Icon" style={iconStyle} class="ticketIcon" />
-                    </div> </>
-                )
-            }
-        </div ></div>
+                        }
+                        style={titleLinkStyle}
+                    >
+                        {titel}{" "}
+                        <img
+                            src="https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/646dcb8c63dae48be19469c4_Chevron-rechts.svg"
+                            alt="Icon"
+                            style={{ maxHeight: "25px", height: "20px" }}
+                            class="arrowIcon"
+                        />
+                    </a>
+                    <div style={uhrzeitButtonStyle} class="genre">
+                        {genre}
+                    </div>
+                </div>
+                {new Date() >= deadline && verkaufStatus !== "N" && (
+                    <>
+                        {" "}
+                        <div class="thirdContainer">
+                            <div style={freiTextStyle} class="freieTickets">
+                                {freiContent}
+                            </div>
+                            <img
+                                src={iconUrl}
+                                alt="Icon"
+                                style={iconStyle}
+                                class="ticketIcon"
+                            />
+                        </div>{" "}
+                    </>
+                )}
+            </div>
+        </div>
     );
 };
 
@@ -239,5 +257,3 @@ const Ticketfetch = () => {
 };
 
 export default Ticketfetch;
-
-
