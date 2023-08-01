@@ -62,7 +62,7 @@ const EntryComponent = ({ entry }) => {
     //             ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
     //             : undefined;
     // const ident = entry["@attributes"]?.ident;
-    console.log(entry["$"].ident);
+    // console.log(entry["$"].ident);
     const ident = entry["$"].ident || "";
 
     const isGenreMatch =
@@ -189,12 +189,10 @@ const EntryComponent = ({ entry }) => {
                             new Date() < deadline
                                 ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
                                 : verkaufStatus !== "N"
-                                ? (genre &&
-                                      genre.includes(
-                                          "Kindergarten- & Schulvorstellung"
-                                      )) ||
-                                  genre.includes("Event") ||
-                                  genre.includes("Gastspiel")
+                                ? genre &&
+                                  genre.includes(
+                                      "Kindergarten- & Schulvorstellung"
+                                  )
                                     ? "https://freilichtbuehne-freudenberg.de/tickets/reservierung/formular-reservierung-kindergarten-schulvorstellungen"
                                     : `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
                                 : undefined
@@ -241,7 +239,7 @@ const Ticketfetch = () => {
         fetch("/api/xml") // Replace with your backend API endpoint
             .then((response) => response.json())
             .then((jsonData) => {
-                console.log(jsonData);
+                // console.log(jsonData);
                 setData(jsonData.vst);
             })
             .catch((error) => console.error("Error:", error));

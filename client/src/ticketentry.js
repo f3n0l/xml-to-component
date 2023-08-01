@@ -3,7 +3,9 @@ import "./index.css"; // Import the CSS file
 // import { useParams } from "react-router-dom";
 
 const EntryComponent = ({ entry }) => {
-    const { datum, titel, uhrzeit, spst, frei, theaweb, genre, stueck } = entry;
+    const { datum, uhrzeit, frei, theaweb, genre, stueck } = entry;
+
+    const stueckTitel = stueck[0]?.sttitel[0];
 
     const entryStyle = {
         display: "flex",
@@ -14,7 +16,7 @@ const EntryComponent = ({ entry }) => {
     };
 
     const getButtonBackgroundColor = (stnr) => {
-        if (stnr === "11") {
+        if ((stnr === "11") | (stnr === "13")) {
             return "#F49800";
         } else if (stnr === "12") {
             return "#0E2C51";
@@ -51,7 +53,7 @@ const EntryComponent = ({ entry }) => {
 
     const stnr = stueck[0]?.stnr[0] || "";
     // console.log(stnr);
-    const spstnr = spst[0]?.spstnr[0] || "";
+    // const spstnr = spst[0]?.spstnr[0] || "";
     const verkaufStatus = theaweb[0]?.verkauf[0] || "";
 
     const deadline = new Date("2023-07-01"); // Replace with your desired deadline = VERKAUFSSTART
@@ -87,10 +89,10 @@ const EntryComponent = ({ entry }) => {
                     ? "#D6D6D6"
                     : genre.includes("Event") || genre.includes("Gastspiel")
                     ? "#1C1C1C"
-                    : getButtonBackgroundColor(spstnr)
+                    : getButtonBackgroundColor(stnr)
                 : genre.includes("Event") || genre.includes("Gastspiel")
                 ? "#1C1C1C"
-                : getButtonBackgroundColor(spstnr),
+                : getButtonBackgroundColor(stnr),
         color: "white",
         textDecoration: "none",
         pointerEvents:
@@ -151,76 +153,74 @@ const EntryComponent = ({ entry }) => {
     const formattedDatum = `${day}. ${monthName}`;
 
     return (
-        <div class="mainContainer">
-            <div style={entryStyle} class="entry">
+        <div className="mainContainer">
+            <div style={entryStyle} className="entry">
                 {" "}
-                <div class="firstContainer">
-                    <div style={wochentagButtonStyle} class="wochentag">
+                <div className="firstContainer">
+                    <div style={wochentagButtonStyle} className="wochentag">
                         {wochentag}
                     </div>
                     <div
-                        class="seperator"
+                        className="seperator"
                         //  style={separatorStyle}
                     >
                         |
                     </div>
                     {/* Add a separator div */}
-                    <div style={datumButtonStyle} class="datum">
+                    <div style={datumButtonStyle} className="datum">
                         {formattedDatum}
                     </div>
                     <div
-                        class="seperator"
+                        className="seperator"
                         //  style={separatorStyle}
                     >
                         |
                     </div>
-                    <div style={uhrzeitButtonStyle} class="uhrzeit">
+                    <div style={uhrzeitButtonStyle} className="uhrzeit">
                         {uhrzeit} Uhr
                     </div>
                 </div>{" "}
-                <div class="secondContainer">
+                <div className="secondContainer">
                     <a
-                        class="titelLink"
+                        className="titelLink"
                         href={
                             new Date() < deadline
                                 ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
                                 : verkaufStatus !== "N"
-                                ? (genre &&
-                                      genre.includes(
-                                          "Kindergarten- & Schulvorstellung"
-                                      )) ||
-                                  genre.includes("Event") ||
-                                  genre.includes("Gastspiel")
+                                ? genre &&
+                                  genre.includes(
+                                      "Kindergarten- & Schulvorstellung"
+                                  )
                                     ? "https://freilichtbuehne-freudenberg.de/tickets/reservierung/formular-reservierung-kindergarten-schulvorstellungen"
                                     : `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
                                 : undefined
                         }
                         style={titleLinkStyle}
                     >
-                        {titel}{" "}
+                        {stueckTitel}{" "}
                         <img
                             src="https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/646dcb8c63dae48be19469c4_Chevron-rechts.svg"
                             alt="Icon"
                             style={{ maxHeight: "25px", height: "20px" }}
-                            class="arrowIcon"
+                            className="arrowIcon"
                         />
                     </a>
-                    <div style={uhrzeitButtonStyle} class="genre">
+                    <div style={uhrzeitButtonStyle} name="genre">
                         {genre}
                     </div>
                 </div>
                 {new Date() >= deadline && verkaufStatus !== "N" && (
                     <>
                         {" "}
-                        <div class="thirdContainer">
-                            <div style={freiTextStyle} class="freieTickets">
+                        <div className="thirdContainer">
+                            <div style={freiTextStyle} className="freieTickets">
                                 {freiContent}
                             </div>
                             <img
                                 src={iconUrl}
                                 alt="Icon"
                                 style={iconStyle}
-                                class="ticketIcon"
+                                className="ticketIcon"
                             />
                         </div>{" "}
                     </>
@@ -237,14 +237,14 @@ const Ticketfetch = () => {
         fetch("/api/xml") // Replace with your backend API endpoint
             .then((response) => response.json())
             .then((jsonData) => {
-                console.log(jsonData);
+                // console.log(jsonData);
                 setData(jsonData.vst);
             })
             .catch((error) => console.error("Error:", error));
     }, []);
 
     return (
-        <div class="mainContainer">
+        <div className="mainContainer">
             {data.map((entry, index) => (
                 <EntryComponent key={index} entry={entry} />
             ))}
