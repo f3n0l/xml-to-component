@@ -3,7 +3,8 @@ import "./index.css"; // Import the CSS file
 // import { useParams } from "react-router-dom";
 
 const EntryComponent = ({ entry }) => {
-    const { datum, titel, uhrzeit, spst, frei, theaweb, genre } = entry;
+    const { datum, stueck, uhrzeit, frei, theaweb, genre } = entry;
+    const stueckTitel = stueck[0]?.sttitel[0];
 
     const entryStyle = {
         display: "flex",
@@ -13,10 +14,10 @@ const EntryComponent = ({ entry }) => {
         padding: "5px",
     };
 
-    const getButtonBackgroundColor = (spstnr) => {
-        if (spstnr === "1") {
+    const getButtonBackgroundColor = (stnr) => {
+        if ((stnr === "11") | (stnr === "13")) {
             return "#F49800";
-        } else if (spstnr === "2") {
+        } else if (stnr === "12") {
             return "#0E2C51";
         } else {
             return "lightgray";
@@ -49,7 +50,7 @@ const EntryComponent = ({ entry }) => {
         }
     };
 
-    const spstnr = spst[0]?.spstnr[0] || "";
+    const stnr = stueck[0]?.stnr[0] || "";
     const verkaufStatus = theaweb[0]?.verkauf[0] || "";
 
     const deadline = new Date("2023-07-01"); // Replace with your desired deadline = VERKAUFSSTART
@@ -90,10 +91,10 @@ const EntryComponent = ({ entry }) => {
                     ? "#D6D6D6"
                     : genre.includes("Event") || genre.includes("Gastspiel")
                     ? "#1C1C1C"
-                    : getButtonBackgroundColor(spstnr)
+                    : getButtonBackgroundColor(stnr)
                 : genre.includes("Event") || genre.includes("Gastspiel")
                 ? "#1C1C1C"
-                : getButtonBackgroundColor(spstnr),
+                : getButtonBackgroundColor(stnr),
         color: "white",
         textDecoration: "none",
         pointerEvents:
@@ -154,36 +155,36 @@ const EntryComponent = ({ entry }) => {
     const formattedDatum = `${day}. ${monthName}`;
 
     return (
-        <div class="mainContainer">
-            <div style={entryStyle} class="entry">
+        <div className="mainContainer">
+            <div style={entryStyle} className="entry">
                 {" "}
-                <div class="firstContainer">
-                    <div style={wochentagButtonStyle} class="wochentag">
+                <div className="firstContainer">
+                    <div style={wochentagButtonStyle} className="wochentag">
                         {wochentag}
                     </div>
                     <div
-                        class="seperator"
+                        className="seperator"
                         //  style={separatorStyle}
                     >
                         |
                     </div>
                     {/* Add a separator div */}
-                    <div style={datumButtonStyle} class="datum">
+                    <div style={datumButtonStyle} className="datum">
                         {formattedDatum}
                     </div>
                     <div
-                        class="seperator"
+                        className="seperator"
                         //  style={separatorStyle}
                     >
                         |
                     </div>
-                    <div style={uhrzeitButtonStyle} class="uhrzeit">
+                    <div style={uhrzeitButtonStyle} className="uhrzeit">
                         {uhrzeit} Uhr
                     </div>
                 </div>{" "}
-                <div class="secondContainer">
+                <div className="secondContainer">
                     <a
-                        class="titelLink"
+                        className="titelLink"
                         href={
                             new Date() < deadline
                                 ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
@@ -198,30 +199,30 @@ const EntryComponent = ({ entry }) => {
                         }
                         style={titleLinkStyle}
                     >
-                        {titel}{" "}
+                        {stueckTitel}{" "}
                         <img
                             src="https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/646dcb8c63dae48be19469c4_Chevron-rechts.svg"
                             alt="Icon"
                             style={{ maxHeight: "25px", height: "20px" }}
-                            class="arrowIcon"
+                            className="arrowIcon"
                         />
                     </a>
-                    <div style={uhrzeitButtonStyle} class="genre">
+                    <div style={uhrzeitButtonStyle} className="genre">
                         {genre}
                     </div>
                 </div>
                 {new Date() >= deadline && verkaufStatus !== "N" && (
                     <>
                         {" "}
-                        <div class="thirdContainer">
-                            <div style={freiTextStyle} class="freieTickets">
+                        <div className="thirdContainer">
+                            <div style={freiTextStyle} className="freieTickets">
                                 {freiContent}
                             </div>
                             <img
                                 src={iconUrl}
                                 alt="Icon"
                                 style={iconStyle}
-                                class="ticketIcon"
+                                className="ticketIcon"
                             />
                         </div>{" "}
                     </>
@@ -245,7 +246,7 @@ const Ticketfetch = () => {
     }, []);
 
     return (
-        <div class="mainContainer">
+        <div className="mainContainer">
             {data.map((entry, index) => (
                 <EntryComponent key={index} entry={entry} />
             ))}
