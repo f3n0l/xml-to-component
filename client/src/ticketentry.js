@@ -205,7 +205,11 @@ const EntryComponent = ({ entry }) => {
                             className="arrowIcon"
                         />
                     </a>
-                    <div style={uhrzeitButtonStyle} name="genre">
+                    <div
+                        style={uhrzeitButtonStyle}
+                        name="genre"
+                        className="genre"
+                    >
                         {genre}
                     </div>
                 </div>
