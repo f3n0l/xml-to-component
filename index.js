@@ -5,19 +5,17 @@ const server = Server(app);
 const path = require("path");
 const compression = require("compression");
 
-var parseString = require("xml2js").parseString;
-var https = require("https");
+const parseString = require("xml2js").parseString;
+const https = require("https");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(compression());
 app.use(express.json());
 
-/////////////////////////////// Change URL Below
-
 app.get("/api/xml", async (request, response) => {
     function xmlToJson(url, callback) {
-        var req = https.get(url, function (res) {
-            var xml = "";
+        const req = https.get(url, function (res) {
+            let xml = "";
 
             res.on("data", function (chunk) {
                 xml += chunk;
@@ -37,11 +35,7 @@ app.get("/api/xml", async (request, response) => {
                 });
             });
         });
-    }
 
-    // Change ending of url according to the date needed:
-    var url =
-        "https://freilichtbuehne-freudenberg-tickets.de/cbn/cbn.php?document=spielplxml&von=01.01.2023&bis=31.12.2023";
     xmlToJson(url, function (err, data) {
         console.log(data.spielplan.vst);
         if (err) {
@@ -54,15 +48,6 @@ app.get("/api/xml", async (request, response) => {
 
 ///////////////////////////////
 
-app.use(express.static(path.join(__dirname, "build")));
-
-app.get("/", function (req, res) {
-    res.sendFile(path.resolve(__dirname, "build", "index.html"));
-});
-
-app.get("*", function (req, res) {
-    res.sendFile(path.resolve(__dirname, "build", "index.html"));
-});
 
 server.listen(process.env.PORT || 3001, () => {
     console.log("I'm listening.");

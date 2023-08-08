@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./index.css"; // Import the CSS file
 // import { useParams } from "react-router-dom";
 
+// see new repo "ticketshop" for more complex filter functionality
+// simple fetch and map operation from XML to JSON coversion
+
+
+
 const EntryComponent = ({ entry }) => {
     const { datum, uhrzeit, frei, theaweb, genre, stueck } = entry;
 
@@ -109,6 +114,7 @@ const EntryComponent = ({ entry }) => {
         marginRight: "5px",
         padding: "5px",
         borderRadius: "5px",
+
     };
 
     const wochentagButtonStyle = {
@@ -238,11 +244,8 @@ const Ticketfetch = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        fetch("/api/xml") // Replace with your backend API endpoint
-            .then((response) => response.json())
-            .then((jsonData) => {
-                // console.log(jsonData);
-                setData(jsonData.vst);
+
+      
             })
             .catch((error) => console.error("Error:", error));
     }, []);
@@ -253,7 +256,7 @@ const Ticketfetch = () => {
                 <EntryComponent key={index} entry={entry} />
             ))}
         </div>
-    );
+    ); // maps through entries
 };
 
 export default Ticketfetch;
