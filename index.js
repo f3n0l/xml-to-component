@@ -12,8 +12,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(compression());
 app.use(express.json());
 
-/////////////////////////////// fetch xml from assigned URL, convert to json and send to frontend
-
 app.get("/api/xml", async (request, response) => {
     function xmlToJson(url, callback) {
         const req = https.get(url, function (res) {
@@ -37,20 +35,22 @@ app.get("/api/xml", async (request, response) => {
                 });
             });
         });
-    }
-    const url = "https://www.w3schools.com/xml/plant_catalog.xml";
+
     xmlToJson(url, function (err, data) {
-        console.log(data);
+        console.log(data.spielplan.vst);
         if (err) {
             return console.err(err);
         }
-        console.log(data);
-        response.json(data);
+
+        response.json(data.spielplan);
     });
 });
 
 ///////////////////////////////
 
+
 server.listen(process.env.PORT || 3001, () => {
     console.log("I'm listening.");
 });
+
+//delete url

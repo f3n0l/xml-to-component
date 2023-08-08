@@ -1,117 +1,258 @@
 import React, { useEffect, useState } from "react";
 import "./index.css"; // Import the CSS file
+// import { useParams } from "react-router-dom";
 
 const EntryComponent = ({ entry }) => {
-    // Destructure the entry object to access its properties
-    const { AVAILABILITY, BOTANICAL, COMMON, LIGHT, PRICE, ZONE } = entry;
-
-    // Get the numeric value from the PRICE property
-    const priceValue = parseFloat(PRICE[0].substring(1));
-
-    // Determine the background color for the PRICE button
-    let priceButtonStyle = {};
-    if (priceValue >= 0 && priceValue < 4) {
-        priceButtonStyle.backgroundColor = "lightgreen";
-    } else if (priceValue >= 4 && priceValue < 6) {
-        priceButtonStyle.backgroundColor = "lightyellow";
-    } else if (priceValue >= 6) {
-        priceButtonStyle.backgroundColor = "lightcoral";
-    }
-
-    // Style for the entry component
+    const { datum, titel, uhrzeit, frei, theaweb, genre, stueck } = entry;
+    const stueckTitel = stueck[0]?.sttitel[0];
     const entryStyle = {
         display: "flex",
         flexDirection: "row",
-        border: "1px solid black",
+
         marginBottom: "5px",
         padding: "5px",
     };
 
-    // Style for the property buttons
-    const buttonStyle = {
+    const getButtonBackgroundColor = (stnr) => {
+        if ((stnr === "11") | (stnr === "13")) {
+            return "#F49800";
+        } else if (stnr === "12") {
+            return "#0E2C51";
+        } else {
+            return "lightgray";
+        }
+    };
+
+    const getFreiTextColor = (freiValue) => {
+        const freiNumber = Number(freiValue);
+        if (freiNumber === 0) {
+            return "#D6D6D6";
+        } else if (freiNumber > 0 && freiNumber <= 5) {
+            return "#D6D6D6";
+        } else if (freiNumber > 5 && freiNumber <= 50) {
+            return "#FF0000";
+        } else {
+            return "#000000";
+        }
+    };
+
+    const getIconUrl = (freiValue) => {
+        const freiNumber = Number(freiValue);
+        if (freiNumber === 0) {
+            return "https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/6489b8617ae03fffc37cb13f_Doppelticket-frei-5.svg";
+        } else if (freiNumber > 0 && freiNumber <= 5) {
+            return "https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/6489b8617ae03fffc37cb13f_Doppelticket-frei-5.svg";
+        } else if (freiNumber > 5 && freiNumber <= 50) {
+            return "https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/6489b865d4ff2a8fe8e9a660_Doppelticket-frei-50.svg";
+        } else {
+            return "https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/646dde73ae9c80790abd0b9e_Doppelticket.svg";
+        }
+    };
+
+    // const spstnr = spst[0]?.spstnr[0] || "";
+    const stnr = stueck[0]?.stnr[0] || "";
+    const verkaufStatus = theaweb[0]?.verkauf[0] || "";
+
+    const deadline = new Date("2023-07-01"); // Replace with your desired deadline = VERKAUFSSTART
+    const currentDate = new Date();
+
+    //     const titleLinkHref =
+    //         new Date() < deadline
+    //             ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
+    //             : theaweb[0]?.verkauf[0] !== "N"
+    //             ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
+    //             : undefined;
+    // const ident = entry["@attributes"]?.ident;
+    // console.log(entry["$"].ident);
+    const ident = entry["$"].ident || "";
+
+    ////////////////// CHANGE GENRE NAME
+    const isGenreMatch =
+        genre && genre.includes("Kindergarten- & Schulvorstellung");
+
+    if (!isGenreMatch) {
+        return null; // Don't render the component if the genre doesn't match
+    }
+
+    const titleLinkHref = isGenreMatch
+        ? "https://freilichtbuehne-freudenberg.de/tickets/reservierung/formular-reservierung-kindergarten-schulvorstellungen"
+        : new Date() < deadline
+        ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
+        : verkaufStatus !== "N"
+        ? `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
+        : undefined;
+
+    const titleLinkStyle = {
+        marginRight: "5px",
+        padding: "5px",
+
+        backgroundColor:
+            new Date() >= deadline
+                ? theaweb[0]?.verkauf[0] === "N"
+                    ? "#D6D6D6"
+                    : genre.includes("Event") || genre.includes("Gastspiel")
+                    ? "#1C1C1C"
+                    : getButtonBackgroundColor(stnr)
+                : genre.includes("Event") || genre.includes("Gastspiel")
+                ? "#1C1C1C"
+                : getButtonBackgroundColor(stnr),
+        color: "white",
+        textDecoration: "none",
+        pointerEvents:
+            new Date() >= deadline || new Date() < deadline ? "auto" : "none",
+    };
+
+    const datumButtonStyle = {
         marginRight: "5px",
         padding: "5px",
         borderRadius: "5px",
-        backgroundColor: "lightgray", // Set the default background color to gray
     };
 
+    const uhrzeitButtonStyle = {
+        marginRight: "5px",
+        padding: "5px",
+        borderRadius: "5px",
+    };
+
+    const wochentagButtonStyle = {
+        marginRight: "5px",
+        padding: "5px",
+        borderRadius: "5px",
+    };
+
+    const freiTextStyle = {
+        marginRight: "5px",
+        padding: "5px",
+        borderRadius: "5px",
+        color: getFreiTextColor(frei[0]),
+    };
+
+    const iconUrl = getIconUrl(frei[0]);
+
+    const iconStyle = {
+        width: "30px",
+        height: "30px",
+        marginLeft: "5px",
+    };
+
+    let freiContent;
+    const freiNumber = Number(frei[0]);
+    if (freiNumber === 0) {
+        freiContent = "ausverkauft";
+    } else if (freiNumber === 1) {
+        freiContent = `noch ${freiNumber} Ticket verfügbar`;
+    } else {
+        freiContent = `noch ${freiNumber} Tickets verfügbar`;
+    }
+
+    const [day, month, year] = datum[0]?.split(".") || [];
+    const dateObject = new Date(year, month - 1, day);
+    const wochentag = dateObject.toLocaleDateString("de-DE", {
+        weekday: "long",
+    });
+
+    const monthName = dateObject.toLocaleDateString("de-DE", { month: "long" });
+
+    const formattedDatum = `${day}. ${monthName}`;
+
     return (
-        <div style={entryStyle}>
-            <div style={buttonStyle}>{AVAILABILITY[0]}</div>
-            <div style={buttonStyle}>{BOTANICAL[0]}</div>
-            <div style={buttonStyle}>{COMMON[0]}</div>
-            <div style={buttonStyle}>{LIGHT[0]}</div>
-            <div style={{ ...buttonStyle, ...priceButtonStyle }}>
-                {PRICE[0]}
+        <div className="mainContainer">
+            <div style={entryStyle} className="entry">
+                {" "}
+                <div className="firstContainer">
+                    <div style={wochentagButtonStyle} className="wochentag">
+                        {wochentag}
+                    </div>
+                    <div
+                        className="seperator"
+                        //  style={separatorStyle}
+                    >
+                        |
+                    </div>
+                    {/* Add a separator div */}
+                    <div style={datumButtonStyle} className="datum">
+                        {formattedDatum}
+                    </div>
+                    <div
+                        className="seperator"
+                        //  style={separatorStyle}
+                    >
+                        |
+                    </div>
+                    <div style={uhrzeitButtonStyle} className="uhrzeit">
+                        {uhrzeit} Uhr
+                    </div>
+                </div>{" "}
+                <div className="secondContainer">
+                    <a
+                        className="titelLink"
+                        href={
+                            new Date() < deadline
+                                ? "https://freilichtbuehne-freudenberg.de/programm/countdown-spielzeit"
+                                : verkaufStatus !== "N"
+                                ? genre &&
+                                  genre.includes(
+                                      "Kindergarten- & Schulvorstellung"
+                                  )
+                                    ? "https://freilichtbuehne-freudenberg.de/tickets/reservierung/formular-reservierung-kindergarten-schulvorstellungen"
+                                    : `https://freilichtbuehne-freudenberg-tickets.de/THEAweb2/theaweb.php?modus=&canmobile=&modul=saalplan&skin=&param=${ident}`
+                                : undefined
+                        }
+                        style={titleLinkStyle}
+                    >
+                        {stueckTitel}{" "}
+                        <img
+                            src="https://uploads-ssl.webflow.com/63ea1b64fd88cb1067b6d627/646dcb8c63dae48be19469c4_Chevron-rechts.svg"
+                            alt="Icon"
+                            style={{ maxHeight: "25px", height: "20px" }}
+                            className="arrowIcon"
+                        />
+                    </a>
+                    <div style={uhrzeitButtonStyle} className="genre">
+                        {genre}
+                    </div>
+                </div>
+                {new Date() >= deadline && verkaufStatus !== "N" && (
+                    <>
+                        {" "}
+                        <div className="thirdContainer">
+                            <div style={freiTextStyle} className="freieTickets">
+                                {freiContent}
+                            </div>
+                            <img
+                                src={iconUrl}
+                                alt="Icon"
+                                style={iconStyle}
+                                className="ticketIcon"
+                            />
+                        </div>{" "}
+                    </>
+                )}
             </div>
-            <div style={buttonStyle}>{ZONE[0]}</div>
         </div>
     );
 };
 
-const TicketfetchExtended = () => {
+const Ticketfetch = () => {
     const [data, setData] = useState([]);
-    const [filterIndex, setFilterIndex] = useState(0);
-    const [isFilterActive, setIsFilterActive] = useState(true);
-    const [selectedFilter, setSelectedFilter] = useState("");
 
     useEffect(() => {
-        fetch("/api/xml") // Replace with your JSON endpoint
+        fetch("/api/xml") // Replace with your backend API endpoint
             .then((response) => response.json())
             .then((jsonData) => {
-                console.log(jsonData.CATALOG.PLANT);
-                setData(jsonData.CATALOG.PLANT); // Set the data state to jsonData.CATALOG.PLANT
+                // console.log(jsonData);
+                setData(jsonData.vst);
             })
             .catch((error) => console.error("Error:", error));
     }, []);
 
-    const filters = [...new Set(data.map((entry) => entry.ZONE[0]))]; // Get unique values from "ZONE"
-
-    const handleFilterChange = () => {
-        const newIndex = (filterIndex + 1) % filters.length;
-        setFilterIndex(newIndex);
-    };
-
-    const handleToggleFilter = () => {
-        setIsFilterActive((prevFilterState) => !prevFilterState);
-    };
-
-    const handleSelectFilter = (event) => {
-        setSelectedFilter(event.target.value);
-    };
-
-    const filteredData = Array.isArray(data)
-        ? isFilterActive
-            ? data.filter(
-                  (entry) =>
-                      entry.ZONE[0] === (selectedFilter || filters[filterIndex])
-              )
-            : data
-        : [];
-
     return (
-        <div>
-            <button onClick={handleFilterChange}>
-                Cycle Filter (Current Filter: {filters[filterIndex]})
-            </button>
-            <button onClick={handleToggleFilter}>
-                {isFilterActive ? "Deactivate Filters" : "Activate Filters"}
-            </button>
-            <select value={selectedFilter} onChange={handleSelectFilter}>
-                <option value="">All</option>
-                {filters.map((filter, index) => (
-                    <option key={index} value={filter}>
-                        {filter}
-                    </option>
-                ))}
-            </select>
-            <div>
-                {filteredData.map((entry, index) => (
-                    <EntryComponent key={index} entry={entry} />
-                ))}
-            </div>
+        <div className="mainContainer">
+            {data.map((entry, index) => (
+                <EntryComponent key={index} entry={entry} />
+            ))}
         </div>
     );
 };
 
-export default TicketfetchExtended;
+export default Ticketfetch;

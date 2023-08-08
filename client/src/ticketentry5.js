@@ -2,14 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./index.css"; // Import the CSS file
 // import { useParams } from "react-router-dom";
 
-// see new repo "ticketshop" for more complex filter functionality
-// simple fetch and map operation from XML to JSON coversion
-
-
-
 const EntryComponent = ({ entry }) => {
-    const { datum, uhrzeit, frei, theaweb, genre, stueck } = entry;
-
+    const { datum, stueck, uhrzeit, frei, theaweb, genre } = entry;
     const stueckTitel = stueck[0]?.sttitel[0];
 
     const entryStyle = {
@@ -57,8 +51,6 @@ const EntryComponent = ({ entry }) => {
     };
 
     const stnr = stueck[0]?.stnr[0] || "";
-    // console.log(stnr);
-    // const spstnr = spst[0]?.spstnr[0] || "";
     const verkaufStatus = theaweb[0]?.verkauf[0] || "";
 
     const deadline = new Date("2023-07-01"); // Replace with your desired deadline = VERKAUFSSTART
@@ -75,7 +67,12 @@ const EntryComponent = ({ entry }) => {
     const ident = entry["$"].ident || "";
 
     const isGenreMatch =
-        genre && genre.includes("Kindergarten- & Schulvorstellung");
+        genre && (genre.includes("Event") || genre.includes("Gastspiel"));
+
+    if (!isGenreMatch) {
+        return null; // Don't render the component if the genre doesn't match
+    }
+
     const titleLinkHref = isGenreMatch
         ? "https://freilichtbuehne-freudenberg.de/tickets/reservierung/formular-reservierung-kindergarten-schulvorstellungen"
         : new Date() < deadline
@@ -114,7 +111,6 @@ const EntryComponent = ({ entry }) => {
         marginRight: "5px",
         padding: "5px",
         borderRadius: "5px",
-
     };
 
     const wochentagButtonStyle = {
@@ -211,11 +207,7 @@ const EntryComponent = ({ entry }) => {
                             className="arrowIcon"
                         />
                     </a>
-                    <div
-                        style={uhrzeitButtonStyle}
-                        name="genre"
-                        className="genre"
-                    >
+                    <div style={uhrzeitButtonStyle} className="genre">
                         {genre}
                     </div>
                 </div>
@@ -244,8 +236,11 @@ const Ticketfetch = () => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-
-      
+        fetch("/api/xml") // Replace with your backend API endpoint
+            .then((response) => response.json())
+            .then((jsonData) => {
+                // console.log(jsonData);
+                setData(jsonData.vst);
             })
             .catch((error) => console.error("Error:", error));
     }, []);
@@ -256,7 +251,7 @@ const Ticketfetch = () => {
                 <EntryComponent key={index} entry={entry} />
             ))}
         </div>
-    ); // maps through entries
+    );
 };
 
 export default Ticketfetch;
